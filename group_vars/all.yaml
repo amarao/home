@@ -10,5 +10,8 @@ apt_packages:
   - tcpdump
   - sudo
   - terminator
+  - apt-file
+  - libpam-modules
 passwordless_sudo: yes
 priveleged_users: amarao
+umask: 022

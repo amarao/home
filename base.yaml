@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  gather_facts: no
   tasks:
    - name: Setup main mirror
      become: yes
@@ -20,6 +21,7 @@
      tags:
       - apt
    - name: Allow passwordless sudo for sudo group
+     become: yes
      lineinfile:
        dest: /etc/sudoers
        state: present
@@ -30,7 +32,28 @@
      tags:
       - sudo
    - name: Add priveleged users to sudo group
+     become: yes
      user: name={{item}} groups=sudo append=yes state=present
      with_items: '{{priveleged_users}}'
      tags:
       - sudo
+   - name: Configure umask
+     become: yes
+     lineinfile:
+       line: UMASK={{umask}}
+       path: /etc/default/login
+       state: present
+       create: true
+     register: umask_changed
+     tags:
+      - umask
+
+- hosts: nvidia
+  gather_facts: no
+  tasks:
+   - name: Install nvidia non-free driver
+     become: yes
+     apt: name=nvidia-driver state=installed
+  tags:
+   - apt
+   - nvidia
