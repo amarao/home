@@ -1,0 +1,14 @@
+---
+apt_mirror: http://ftp2.de.debian.org/debian/
+apt_release: stable
+apt_additional_components: contrib non-free
+apt_update_cache: yes
+apt_cache_valid_time: 3600
+apt_packages:
+  - vim
+  - mc
+  - tcpdump
+  - sudo
+  - terminator
+passwordless_sudo: yes
+priveleged_users: amarao
