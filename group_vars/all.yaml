@@ -12,6 +12,9 @@ apt_packages:
   - terminator
   - apt-file
   - libpam-modules
+  - atop
+  - cryptsetup
+  - mdadm
 passwordless_sudo: yes
 priveleged_users: amarao
 umask: 022
