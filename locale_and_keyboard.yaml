@@ -1,0 +1,33 @@
+---
+- hosts: all
+  tasks:
+   - name: Configure console
+     become: yes
+     template:
+       src: console-setup.j2
+       dest: /etc/default/console-setup
+     vars:
+       charmap: UTF-8
+       codeset: CyrSlav
+       fontface: VGA
+       fontsize: 8x16
+   - name: Configure system-wide keyboard settings
+     become: yes
+     template:
+       src: keyboard.j2
+       dest: /etc/default/keyboard
+     notify:
+      - apply keyboard configuration
+     vars:
+       model: pc105
+       layouts:
+        - us
+        - ru
+       grp: shift_caps_switch
+       compose: rlat
+       grp_led: scroll
+      
+  handlers:
+   - name: apply keyboard configuration
+     become: yes
+     command: udevadm trigger --subsystem-match=input --action=change
