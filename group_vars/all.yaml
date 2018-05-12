@@ -1,7 +1,12 @@
 ---
 apt_mirror: http://ftp2.de.debian.org/debian/
-apt_release: stable
+apt_releases:
+ - stable
+ - testing
+ - sid
+ - experimental
 apt_additional_components: contrib non-free
+apt_sources: yes
 apt_update_cache: yes
 apt_cache_valid_time: 3600
 apt_packages:
@@ -15,6 +20,17 @@ apt_packages:
   - atop
   - cryptsetup
   - mdadm
+  - pavucontrol
 passwordless_sudo: yes
 priveleged_users: amarao
 umask: 022
+
+ops_tools:
+ - git
+ - ansible
+ - firejail
+drawing_tools:
+ - krita
+ - inkscape
+ - blender
+ - gimp

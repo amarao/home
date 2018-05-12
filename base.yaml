@@ -4,10 +4,9 @@
   tasks:
    - name: Setup main mirror
      become: yes
-     copy:
-       content: |
-         deb {{apt_mirror}} {{apt_release}} free {{apt_additional_components|default(" ")}}
-       dest: /etc/apt/sources.list
+     template:
+       src: apt.list.j2
+       dest: /etc/apt/sources.list.d/base.list
      tags:
       - apt
    - name: Install packages

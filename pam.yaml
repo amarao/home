@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+   - name: Install mount script
+     become: yes
+     copy: src=mount_home dest=/sbin/mount_home mode=0500 owner=root group=root
+   - name: Update PAM config
+     become: yes
+     lineinfile:
+       path: /etc/pam.d/common-auth
+       line: "auth       optional   pam_exec.so expose_authtok quiet /sbin/mount_home"
+       insertafter: EOF
+   - name: Remove old home mount from /etc/fstab
+     become: yes
+     lineinfile:
+        path: /etc/fstab
+        regexp: .+/home.+
+        state: absent

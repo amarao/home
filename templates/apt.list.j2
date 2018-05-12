@@ -1,0 +1,6 @@
+{% for repo in apt_releases %}
+deb {{apt_mirror}} {{repo}} main {{apt_additional_components|default(" ")}}
+{% if apt_sources %}
+deb-src {{apt_mirror}} {{repo}} main {{apt_additional_components|default(" ")}}
+{% endif %}
+{%endfor %}

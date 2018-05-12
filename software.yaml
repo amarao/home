@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+   - name: Install group-specific packages
+     become: yes
+     apt: name='{{item}}' state=installed
+     with_items:
+      - '{{ops_tools}}'
+      - '{{drawing_tools}}'
