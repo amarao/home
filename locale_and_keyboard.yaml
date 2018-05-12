@@ -24,7 +24,7 @@
         - us
         - ru
        grp: shift_caps_switch
-       compose: rlat
+       compose: ralt
        grp_led: scroll
       
   handlers:
