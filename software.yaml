@@ -7,3 +7,4 @@
      with_items:
       - '{{ops_tools}}'
       - '{{drawing_tools}}'
+      - '{{programming_tools}}'

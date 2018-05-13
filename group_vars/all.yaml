@@ -29,8 +29,17 @@ ops_tools:
  - git
  - ansible
  - firejail
+ - iwatch
 drawing_tools:
  - krita
  - inkscape
  - blender
  - gimp
+programming_tools:
+ - jupyter
+ - python3
+ - python3-pytest
+ - python
+ - python-pytest
+ - rustc
+ - cargo

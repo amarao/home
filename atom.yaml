@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+   - name: Download deb for atom
+     become: yes
+     get_url: 
+       url: https://atom.io/download/deb
+       dest: /var/cache/atom.deb
+     notify: install atom
+  handlers:
+   - name: install atom
+     become: yes
+     command: dpkg -i /var/cache/atom.deb
