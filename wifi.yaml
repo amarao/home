@@ -1,0 +1,29 @@
+---
+- hosts: wifi
+  tasks:
+   - name: Disable new names for network ifaces # bug around long usb device names
+     become: yes
+     file: dest=/etc/systemd/network/99-default.link src=/dev/null state=link
+     notify: reload driver
+   - name: Install firmware
+     become: yes
+     apt: name=firmware-linux-nonfree state=installed
+   - name: Configure wifi connection
+     become: yes
+     template:
+      src: network-manager.conf.j2
+      dest: /etc/NetworkManager/system-connections/{{wifi.name}}
+     notify: reload NetworkManager
+   - name: Make connection up (may loose network)
+     become: yes
+     command: nmcli connection up NET-42
+     async: 2
+     poll: 0
+  handlers:
+   - name: reload NetworkManager
+     become: yes
+     systemd: name=NetworkManager state=reloaded
+   - name: reload driver
+     become: yes
+     command: rmmod {{wifi.driver}}; modprobe {{wifi.driver}}
+     when: wifi.driver|default(False)
