@@ -2,16 +2,22 @@
 set -e
 test -z "$PAM_USER" && exit "Need PAM_USER variable to continue"
 DEVICE=/dev/disk/by-id/ata-INTEL_SSDSC2BW240A4_BTDA327102U12403GN-part3
+HOME_DEVICE=/dev/mapper/home--vg-home
+CRYPTO_DEVICE=home_vol
 key_file=/etc/$PAM_USER-home.key.gpg
 if [ ! -f $key_file ]; then
 	logger -t mount_home skipping mount, $PAM_USER is not a target user, no key found
 	exit 0
 fi
-if test -b /dev/mapper/home--vg-home; then
-	logger -t mount_home /dev/mapper/home--vg-home is already present, skipping dmcrypt
+if test -b $HOME_DEVICE; then
+	logger -t mount_home $HOME_DEVICE is already present, skipping dmcrypt
 else
-    /usr/bin/gpg --batch --passphrase-fd 0 --no-default-keyring -d $key_file| /sbin/cryptsetup luksOpen $DEVICE home_vol --key-file - --allow-discards
+    /usr/bin/gpg --batch --passphrase-fd 0 --no-default-keyring -d $key_file| /sbin/cryptsetup luksOpen $DEVICE $CRYPTO_DEVICE --key-file - --allow-discards
 fi
 /sbin/pvscan
-/bin/fgrep /dev/mapper/home--vg-home /proc/mounts || /bin/mount /dev/mapper/home--vg-home /home
+if /bin/fgrep $HOME_DEVICE /proc/mounts; then
+    logger -t mount_home $HOVE_DEVICE is already mounted
+else
+     /bin/mount $HOME_DEVICE /home
+fi
 logger -t mount_home mounted /home successfuly for $PAM_USER
