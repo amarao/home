@@ -6,6 +6,13 @@ retro
 
 [secrets]
 retro
+vpn_ru
 
 [wifi]
 retro
+
+[vpn_ru]
+vpn.desunote.ru
+
+[vpn:children]
+vpn_ru

@@ -1,0 +1,7 @@
+---
+wifi:
+  name: NET-42
+  uuid: dfb4b79a-8e08-4623-b6b3-3695cf4d1758
+  mac: 4a:94:47:9d:ac:6b
+  password: {{wifi_password}}
+

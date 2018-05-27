@@ -1,1 +1,3 @@
 group_vars/secrets.yaml
+group_vars/.secrets.yaml.*
+*.retry
