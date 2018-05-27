@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes
+  pre_tasks:
+    - name: Change sources.list to sid
+      replace:
+        path: /etc/apt/sources.list
+        regexp: stretch
+        replace: sid
+    - name: Perform upgrade
+      apt: update_cache=yes upgrade=dist install_recommends=yes
+  roles:
+   - george.shuklin.reboot-if-needed-for-upgrade

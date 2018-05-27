@@ -1,0 +1,16 @@
+---
+- name: Reboot server if required
+  shell: "nohup bash -c 'sleep {{reboot_delay}}; reboot' &"
+  args:
+   removes: /var/run/reboot-required
+  register: reboot
+  async: 0
+  poll: 0
+  become: yes
+
+- name: Wait until boot is complete
+  wait_for: host={{ip_to_probe}} port={{port_to_probe}} delay={{delay_before_probe}} timeout={{probe_timeout}}
+  connection: local
+  when: force_reboot or reboot|changed
+  changed_when: True
+

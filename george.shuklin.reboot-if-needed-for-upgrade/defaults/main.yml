@@ -1,0 +1,7 @@
+---
+ip_to_probe: "{{ansible_default_ipv4.address}}"
+port_to_probe: 22
+delay_before_probe: 10
+probe_timeout: 70
+reboot_delay: 2
+force_reboot: False
