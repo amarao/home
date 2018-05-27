@@ -14,11 +14,17 @@
       src: network-manager.conf.j2
       dest: /etc/NetworkManager/system-connections/{{wifi.name}}
      notify: reload NetworkManager
+   - meta: flush_handlers
+   - name: Get current connection list
+     command: nmcli c
+     register: nmcli_output
+     changed_when: False
    - name: Make connection up (may loose network)
      become: yes
      command: nmcli connection up NET-42
      async: 2
      poll: 0
+     when: wifi.name not in nmcli_output.stdout
   handlers:
    - name: reload NetworkManager
      become: yes

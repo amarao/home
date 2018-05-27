@@ -4,8 +4,8 @@ retro
 [nvidia]
 retro
 
-[secrets]
-retro
+[secrets:children]
+home
 vpn_ru
 
 [wifi]
