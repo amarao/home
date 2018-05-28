@@ -1,6 +1,10 @@
 ---
-- hosts: all
+- hosts: home
   tasks:
+   - name: Check if we can apply scheme
+     stat: path=/etc/{{priveleged_users}}-home.key.gpg
+     register: key_file
+     failed_when: not key_file.stat.exists
    - name: Install mount script
      become: yes
      copy: src=mount_home dest=/sbin/mount_home mode=0500 owner=root group=root
