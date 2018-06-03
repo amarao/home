@@ -2,4 +2,15 @@ This is ansible project to configure my home machine.
 It's under heavy construction and I don't really care about reusability beyound my
 own needs.
 
-Although, you may find few this here interesting for your own needs.
+Although, you may find here few things interesting.
+
+Index:
+* base.yaml - configure mirros, sudo, umask for all users
+* dist-upgrade.yaml - performs dist upgrade
+* nvidia.yaml - install nvidia
+* wifi.yaml - configure and install drivers for my RT2560 usb card and configure wifi connection
+* software.yaml - installs different collection of software I use
+* atom.yaml - install fresh version of Atom editor
+* stream.yaml - create user for steam (work in progress, there are a lot to do here)
+* pam.yaml - configure my own encryption scheme for my encrypted home directory.
+

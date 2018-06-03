@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: home
   gather_facts: no
   tasks:
    - name: Setup main mirror
@@ -46,13 +46,3 @@
      register: umask_changed
      tags:
       - umask
-
-- hosts: nvidia
-  gather_facts: no
-  tasks:
-   - name: Install nvidia non-free driver
-     become: yes
-     apt: name=nvidia-driver state=installed
-  tags:
-   - apt
-   - nvidia

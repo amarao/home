@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: home
   tasks:
    - name: Install group-specific packages
      become: yes

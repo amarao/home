@@ -8,28 +8,25 @@
    - name: Install firmware
      become: yes
      apt: name=firmware-linux-nonfree state=installed
-   - name: Configure wifi connection
-     become: yes
-     template:
-      src: network-manager.conf.j2
-      dest: /etc/NetworkManager/system-connections/{{wifi.name}}
-     notify: reload NetworkManager
+     notify: reload driver
    - meta: flush_handlers
    - name: Get current connection list
      command: nmcli c
      register: nmcli_output
      changed_when: False
-   - name: Make connection up (may loose network)
+   - name: Scan for network
      become: yes
-     command: nmcli connection up NET-42
-     async: 2
-     poll: 0
-     when: wifi.name not in nmcli_output.stdout
+     command: nmcli d wifi rescan ssid NET-42
+     register: scan_res
+     retries: 30
+     delay: 2
+     until: scan_res is success
+     when: wifi_name not in nmcli_output.stdout
+   - name: Connect to {{wifi_name}}
+     command: nmcli d wifi connect {{wifi_name}} password {{wifi_password}} ifname {{wifi_iface}}
+     when: wifi_name not in nmcli_output.stdout
   handlers:
-   - name: reload NetworkManager
-     become: yes
-     systemd: name=NetworkManager state=reloaded
    - name: reload driver
      become: yes
-     command: rmmod {{wifi.driver}}; modprobe {{wifi.driver}}
-     when: wifi.driver|default(False)
+     shell: rmmod {{wifi_driver}}; modprobe {{wifi_driver}}
+     when: wifi_driver|default(False)
