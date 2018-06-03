@@ -13,4 +13,5 @@ Index:
 * atom.yaml - install fresh version of Atom editor
 * stream.yaml - create user for steam (work in progress, there are a lot to do here)
 * pam.yaml - configure my own encryption scheme for my encrypted home directory.
-
+* keybindings.yaml - set up keybindings for cinnamon (for custom hotkeys)
+* locale_and_keyboard.yaml set up locale, keyboard and enable language in GTK/Cinnamon

@@ -1,0 +1,25 @@
+---
+- hosts: home
+  gather_facts: no
+  tasks:
+   - name: Configure user-local keybindings (names)
+     dconf:
+       key: /org/cinnamon/desktop/keybindings/custom-keybindings/{{item.key_name}}/name
+       value: "'{{ item.name }}'"
+     with_items: '{{ cinnamon_keybindings }}'
+   - name: Configure user-local keybindings (commands)
+     dconf:
+       key: /org/cinnamon/desktop/keybindings/custom-keybindings/{{item.key_name}}/command
+       value: "'{{ item.command }}'"
+     with_items: '{{ cinnamon_keybindings }}'
+   - name: Configure user-local keybindings (bindings)
+     dconf:
+       key: /org/cinnamon/desktop/keybindings/custom-keybindings/{{item.key_name}}/binding
+       value: '{{ item.bindings|to_json }}'
+     with_items: '{{ cinnamon_keybindings }}'
+   - name: Configure list of keybindings
+     dconf:
+       key: /org/cinnamon/desktop/keybindings/custom-list
+       value: "{{ new_value }}"
+     vars:
+         new_value: '{{ (cinnamon_keybindings|json_query("[].key_name"))|to_json }}'
