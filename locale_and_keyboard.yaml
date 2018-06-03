@@ -26,7 +26,11 @@
        grp: shift_caps_switch
        compose: ralt
        grp_led: scroll
-      
+   - name: Configure user-local dconf locales
+     dconf:
+       key: /org/gnome/libgnomekbd/keyboard/layouts
+       value: "['us', 'ru']"
+
   handlers:
    - name: apply keyboard configuration
      become: yes
