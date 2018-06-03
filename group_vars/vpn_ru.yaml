@@ -1,0 +1,11 @@
+---
+wireguard_wg0_interface:
+  address: 88.212.241.188/27
+  private_key: '{{ wg_client_private_key }}'
+  listen_port: 24887
+
+wireguard_wg0_peers:
+  retro:
+    public_key: '{{ client1_public_key }}'
+
+

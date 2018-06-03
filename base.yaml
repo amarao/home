@@ -9,6 +9,18 @@
        dest: /etc/apt/sources.list.d/base.list
      tags:
       - apt
+   - name: Pin testing over sid
+     become: yes
+     copy:
+      dest: /etc/apt/preferences
+      content: |
+        Package: *
+        Pin: release a=testing
+        Pin-Priority: 900
+        
+        Package: *
+        Pin: release a=unstable
+        Pin-Priority: 800
    - name: Install packages
      become: yes
      apt:

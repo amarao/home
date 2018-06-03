@@ -1,0 +1,5 @@
+---
+wireguard_wg0_peers:
+  vpn.desunote.ru:
+    public_key: '{{ wg_server_private_key }}'
+    endpoint: vpn.desunote.ru:24887

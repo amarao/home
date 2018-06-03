@@ -3,8 +3,8 @@ apt_mirror: http://ftp2.de.debian.org/debian/
 apt_releases:
  - stable
  - testing
-# - sid
-# - experimental
+ - sid
+ - experimental
 apt_additional_components: contrib non-free
 apt_sources: yes
 apt_update_cache: yes
