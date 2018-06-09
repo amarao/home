@@ -9,6 +9,10 @@
       - '{{ drawing_tools }}'
       - '{{ programming_tools }}'
       - '{{ office_tools }}'
+   - name: Purge unwanted packages
+     become: yes
+     apt: name={{ item }} state=absent purge=yes autoremove=yes
+     with_items: '{{ purge_packages }}'
    - name: Install firefox instead of firefox-esr
      become: yes
      apt: name=firefox state=present default_release=sid
