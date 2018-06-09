@@ -3,9 +3,13 @@ wireguard_wg0_peers:
   vpn.desunote.ru:
     public_key: '{{ wg_server_private_key }}'
     endpoint: vpn.desunote.ru:24887
+
 cinnamon_keybindings:
   - key_name: custom0
     name: Terminator
     bindings:
      - 'Scroll_Lock'
     command: '/usr/bin/terminator'
+
+autostart:
+ - xpad

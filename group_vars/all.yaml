@@ -25,6 +25,8 @@ passwordless_sudo: yes
 priveleged_users: amarao
 umask: 022
 
+office_tools:
+ - xpad
 ops_tools:
  - git
  - ansible

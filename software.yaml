@@ -3,15 +3,38 @@
   tasks:
    - name: Install group-specific packages
      become: yes
-     apt: name='{{item}}' state=present
+     apt: name={{ item }} state=present
      with_items:
-      - '{{ops_tools}}'
-      - '{{drawing_tools}}'
-      - '{{programming_tools}}'
+      - '{{ ops_tools }}'
+      - '{{ drawing_tools }}'
+      - '{{ programming_tools }}'
+      - '{{ office_tools }}'
    - name: Install firefox instead of firefox-esr
      become: yes
      apt: name=firefox state=present default_release=sid
      notify: remove firefox-esr
+   - name: Asure user autostart dir exists
+     file: path=~/.config/autostart state=directory
+   - name: Enable autostart
+     copy:
+       dest: ~/.config/autostart/{{ item }}.desktop
+       content: |
+         [Desktop Entry]
+         Version=1.0
+         Name={{ item }}
+         Comment=managed by ansible
+         Exec={{ item }}
+     with_items: '{{ autostart|default([]) }}'
+   - name: Disable autostart
+     copy:
+       dest: ~/.config/autostart/{{ item }}-disabled.desktop
+       content: |
+         [Desktop Entry]
+         Version=1.0
+         Name={{ item }}
+         Comment=managed by ansible
+         Hidden=true
+     with_items: '{{ disable_autostart|default([]) }}'
   handlers:
    - name: remove firefox-esr
      apt: name=firefox-esr state=absent purge=yes autoremove=yes
