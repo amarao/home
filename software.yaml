@@ -3,8 +3,15 @@
   tasks:
    - name: Install group-specific packages
      become: yes
-     apt: name='{{item}}' state=installed
+     apt: name='{{item}}' state=present
      with_items:
       - '{{ops_tools}}'
       - '{{drawing_tools}}'
       - '{{programming_tools}}'
+   - name: Install firefox instead of firefox-esr
+     become: yes
+     apt: name=firefox state=present default_release=sid
+     notify: remove firefox-esr
+  handlers:
+   - name: remove firefox-esr
+     apt: name=firefox-esr state=absent purge=yes autoremove=yes
