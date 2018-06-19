@@ -9,6 +9,7 @@
       - '{{ drawing_tools }}'
       - '{{ programming_tools }}'
       - '{{ office_tools }}'
+      - '{{ multimedia_tools }}'
    - name: Purge unwanted packages
      become: yes
      apt: name={{ item }} state=absent purge=yes autoremove=yes

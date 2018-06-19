@@ -32,6 +32,7 @@ ops_tools:
  - ansible
  - firejail
  - iwatch
+ - lsscsi
 drawing_tools:
  - krita
  - inkscape
@@ -39,6 +40,7 @@ drawing_tools:
  - gimp
  - sane
  - sane-utils
+ - mypaint
 programming_tools:
  - jupyter
  - python3
@@ -47,6 +49,11 @@ programming_tools:
  - python-pytest
  - rustc
  - cargo
+multimedia_tools:
+ - vlc
+ - mplayer2
+ - geeqie
+ - smplayer
 purge_packages:
  - libreoffice-l10n-ar
  - libreoffice-l10n-ast
