@@ -33,6 +33,7 @@ ops_tools:
  - firejail
  - iwatch
  - lsscsi
+ - baobab
 drawing_tools:
  - krita
  - inkscape
@@ -49,6 +50,7 @@ programming_tools:
  - python-pytest
  - rustc
  - cargo
+ - virtualenv
 multimedia_tools:
  - vlc
  - mplayer2
