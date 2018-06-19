@@ -12,7 +12,7 @@ vpn_ru
 retro
 
 [vpn_ru]
-vpn.desunote.ru
+vpn.desunote.ru ansible_ssh_user=cloud-user
 
 [vpn:children]
 vpn_ru
