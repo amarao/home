@@ -1,8 +1,0 @@
----
-- name: Install wireguard
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - wireguard-dkms
-    - wireguard-tools
