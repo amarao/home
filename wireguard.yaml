@@ -2,9 +2,10 @@
 - hosts: home,vpn
   become: yes
   pre_tasks:
-   - debug: msg={{wireguard_wg0_interface}}
    - name: install kernel headers
      become: yes
      apt: name=linux-headers-amd64 state=installed
   roles:
    - wireguard
+  vars:
+    server_address: '{{ hostvars[groups.vpn[0]].ansible_default_ipv4.address }}'

@@ -1,5 +1,5 @@
 [home]
-retro
+retro ansible_connection=local
 
 [nvidia]
 retro

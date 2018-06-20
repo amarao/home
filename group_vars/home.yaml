@@ -1,14 +1,4 @@
 ---
-wireguard_wg0_interface:
-  private_key: '{{ wg_client_private_key }}'
-  address: '{{ ansible_default_ipv4.address }}'
-
-wireguard_wg0_peers:
-  vpn.desunote.ru:
-    public_key: '{{ wg_server_private_key }}'
-    endpoint: vpn.desunote.ru:24887
-    allowed_ips: 0.0.0.0/0
-
 cinnamon_keybindings:
   - key_name: custom0
     name: Terminator
@@ -19,5 +9,4 @@ cinnamon_keybindings:
 autostart:
  - xpad
 
-wireguard_networks:
- - wg0
+wireguard_mode: client
