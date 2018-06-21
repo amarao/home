@@ -1,0 +1,10 @@
+---
+- name: modprobe module
+  become: yes
+  command: modprobe wireguard
+- name: install systemd template
+  become: yes
+  systemd: name=wg-quick@{{ wireguard_interface }}.service enabled=yes state=started
+- name: restart systemd template
+  become: yes
+  systemd: name=wg-quick@{{ wireguard_interface }}.service state=restarted

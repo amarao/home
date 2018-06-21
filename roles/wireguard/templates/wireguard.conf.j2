@@ -1,0 +1,21 @@
+{{ansible_managed|comment}}
+
+{% if wireguard_mode == 'server' %}
+[Interface]
+Address={{ server_internal_address }}
+PrivateKey={{ wireguard_server_private_key }}
+ListenPort={{ wireguard_server_port }}
+[Peer]
+PublicKey={{ wireguard_client_public_key }}
+AllowedIPs={{ client_internal_address }}
+{% endif %}
+{% if wireguard_mode == 'client' %}
+[Interface]
+Address={{ client_internal_address }}
+PrivateKey={{ wireguard_client_private_key }}
+[Peer]
+PersistentKeepalive=61
+Endpoint={{ server_address }}:{{ wireguard_server_port }}
+PublicKey={{ wireguard_server_public_key }}
+AllowedIPs={{ server_internal_address }}
+{% endif %}

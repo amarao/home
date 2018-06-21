@@ -1,0 +1,36 @@
+---
+- name: wireguard|install kernel headers
+  become: yes
+  apt: name=linux-headers-amd64 state=present
+- name: wireguard|install packages
+  become: yes
+  apt: name={{item}} state=present default_release=sid
+  with_items:
+   - wireguard
+   - wireguard-dkms
+   - wireguard-tools
+- name: wireguard|converting public server key
+  shell: echo '{{ wireguard_server_private_key }}'|wg pubkey
+  register: wg_pubkey_output
+  changed_when: false
+- name: wireguard|extracting public server key
+  set_fact:
+    wireguard_server_public_key: '{{ wg_pubkey_output.stdout }}'
+- name: wireguard|converting public client key
+  shell: echo '{{ wireguard_client_private_key }}'|wg pubkey
+  register: wg_pubkey_output2
+  changed_when: false
+- name: wireguard|extracting public client key
+  set_fact:
+    wireguard_client_public_key: '{{ wg_pubkey_output2.stdout }}'
+- name: wireguard|Configure connection
+  become: yes
+  template:
+    src: wireguard.conf.j2
+    dest: /etc/wireguard/{{ wireguard_interface }}.conf
+- name: wireguard|Enable wireguard kernel module
+  become: yes
+  copy:
+    content: 'wireguard'
+    dest: /etc/modules-load.d/wireguard.conf
+  notify: modprobe module
