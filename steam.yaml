@@ -11,6 +11,13 @@
        name: steam
        group: steam
        createhome: no
+   - name: Create steam home
+     become: yes
+     file:
+       path: /home/steam
+       state: directory
+       owner: steam
+       group: steam
    - name: Query for existing architectures
      command: dpkg --print-foreign-architectures
      register: arch
@@ -30,7 +37,38 @@
       - libc6:i386
       - libgl1:i386
       - libdrm2:i386
-      - libegl-nvidia0:i386
-      - libglx-nvidia0:i386
      tags:
       - deps
+
+- hosts: nvidia
+  gather_facts: no
+  tasks:
+  - name: install nvidia stuff
+    become: yes
+    apt: state=installed name={{item}}
+    with_items:
+     - libegl-nvidia0:i386
+     - libglx-nvidia0:i386
+    tags:
+     - deps
+     - nvidia
+
+- hosts: all
+  gather_facts: yes
+  tasks:
+   - name: Download steam deb file
+     get_url:
+       url: https://steamcdn-a.akamaihd.net/client/installer/steam.deb
+       dest: '/home/{{ ansible_user }}/.cache/steam.deb'
+   - name: Unpack steam without running pre/postinst scripts
+     become: yes
+     command: dpkg -x /home/{{ ansible_user }}/.cache/steam.deb /home/steam
+     args:
+      creates: /home/steam/usr/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
+   - name: Unpack bootstrap
+     become: yes
+     become_user: steam
+     command: tar xJf usr/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
+     args:
+       chdir: /home/steam
+       creates: /home/steam/steam.sh
