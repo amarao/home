@@ -11,13 +11,16 @@
        name: steam
        group: steam
        createhome: no
-   - name: Create steam home
+   - name: Create steam home and dirs
      become: yes
      file:
-       path: /home/steam
+       path: '{{ item }}'
        state: directory
        owner: steam
        group: steam
+     with_items:
+       - /home/steam
+       - /home/steam/.pulse
    - name: Query for existing architectures
      command: dpkg --print-foreign-architectures
      register: arch
@@ -72,3 +75,20 @@
      args:
        chdir: /home/steam
        creates: /home/steam/steam.sh
+   - name: Configuring pulseaudio for steam user
+     become: yes
+     copy:
+      content: |
+        default-server = 127.0.0.1
+      dest:
+        /home/steam/.pulse/client.conf
+   - name: Configure pulseaudio access
+     become: yes
+     lineinfile:
+       path: /etc/pulse/default.pa
+       line: load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+     notify: reload pulse
+
+  handlers:
+   - name: reload pulse
+     command: pulseaudio -k
