@@ -40,6 +40,7 @@
       - libc6:i386
       - libgl1:i386
       - libdrm2:i386
+      - libgl1-mesa-glx:i386
      tags:
       - deps
 
