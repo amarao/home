@@ -21,6 +21,7 @@
      with_items:
        - /home/steam
        - /home/steam/.pulse
+       - /home/steam/.cache
    - name: Query for existing architectures
      command: dpkg --print-foreign-architectures
      register: arch
@@ -35,7 +36,7 @@
      when: "'i386' not in arch.stdout"
    - name: Install stream dependencies
      become: yes
-     apt: state=installed name={{item}}
+     apt: state=present name={{item}}
      with_items:
       - libc6:i386
       - libgl1:i386
@@ -61,12 +62,15 @@
   gather_facts: yes
   tasks:
    - name: Download steam deb file
+     become: yes
+     become_user: steam
      get_url:
        url: https://steamcdn-a.akamaihd.net/client/installer/steam.deb
-       dest: '/home/{{ ansible_user }}/.cache/steam.deb'
+       dest: '/home/steam/.cache/steam.deb'
    - name: Unpack steam without running pre/postinst scripts
      become: yes
-     command: dpkg -x /home/{{ ansible_user }}/.cache/steam.deb /home/steam
+     become_user: steam
+     command: dpkg -x /home/steam/.cache/steam.deb /home/steam
      args:
       creates: /home/steam/usr/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
    - name: Unpack bootstrap
@@ -78,6 +82,7 @@
        creates: /home/steam/steam.sh
    - name: Configuring pulseaudio for steam user
      become: yes
+     become_user: steam
      copy:
       content: |
         default-server = 127.0.0.1
