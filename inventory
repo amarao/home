@@ -1,4 +1,4 @@
-[home]
+[desktop]
 retro ansible_connection=local
 
 [nvidia]
@@ -16,3 +16,6 @@ vpn.desunote.ru ansible_ssh_user=cloud-user
 
 [vpn:children]
 vpn_ru
+
+[desktop]
+retro
