@@ -1,23 +1,34 @@
 #!/bin/sh
-set -e
+#set -e
 test -z "$PAM_USER" && exit "Need PAM_USER variable to continue"
-DEVICE=/dev/disk/by-id/ata-INTEL_SSDSC2BW240A4_BTDA327102U12403GN-part3
+DEVICE=/dev/nvme0n1p4
 HOME_DEVICE=/dev/mapper/home--vg-home
 CRYPTO_DEVICE=home_vol
 key_file=/etc/$PAM_USER-home.key.gpg
 if [ ! -f $key_file ]; then
-	logger -t mount_home skipping mount, $PAM_USER is not a target user, no key found
+	/usr/bin/logger -t mount_home skipping mount, $PAM_USER is not a target user, no key found
 	exit 0
 fi
 if test -b $HOME_DEVICE; then
-	logger -t mount_home $HOME_DEVICE is already present, skipping dmcrypt
+	/usr/bin/logger -t mount_home $HOME_DEVICE is already present, skipping dmcrypt
 else
-    /usr/bin/gpg --batch --passphrase-fd 0 --no-default-keyring -d $key_file| /sbin/cryptsetup luksOpen $DEVICE $CRYPTO_DEVICE --key-file - --allow-discards
+	/usr/bin/logger -t mount_home Try decrypt $DEVICE as $CRYPTO_DEVICE
+  	/usr/bin/gpg --batch --passphrase-fd 0 --no-default-keyring -d $key_file| /sbin/cryptsetup luksOpen $DEVICE $CRYPTO_DEVICE --key-file - --allow-discards| /usr/bin/logger -t mount_home_luks
+	/usr/bin/logger -t mount_home Decrypt result was $?
+	/usr/bin/logger -t mount_home search  new PV
+	/sbin/pvscan || sleep 3
+	/sbin/pvscan
+	/sbin/vgscan
+	/sbin/lvscan
+	/sbin/lvs|/usr/bin/logger -t mount_home_lvs
 fi
-/sbin/pvscan
-if /bin/fgrep $HOME_DEVICE /proc/mounts; then
-    logger -t mount_home $HOVE_DEVICE is already mounted
+if /bin/fgrep $HOME_DEVICE /proc/mounts ;
+then
+	/usr/bin/logger -t mount_home $HOME_DEVICE already mounted
+	exit 0
 else
-     /bin/mount $HOME_DEVICE /home
+	/bin/mount $HOME_DEVICE /home/$PAM_USER | /usr/bin/logger -t mount_home_mount
+	/usr/bin/logger -t mount_home mounted /home/$PAM_USER successfuly to $PAM_USER 
+	exit 0
 fi
-logger -t mount_home mounted /home successfuly for $PAM_USER
+
