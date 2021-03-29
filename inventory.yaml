@@ -1,0 +1,27 @@
+---
+desktop:
+  hosts:
+    retro:
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/python3
+
+nvidia:
+  hosts:
+    retro:
+
+secrets:
+  children:
+    home:
+
+#[wifi]
+#retro
+
+steam_vpn_server:
+  hosts:
+    vpn.desunote.ru:
+      ansible_ssh_user: cloud-user
+      ansible_python_interpreter: /usr/bin/python3
+
+vpn:
+  children:
+    steam_vpn_server:
