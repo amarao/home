@@ -1,0 +1,51 @@
+---
+- name: Create vpn connection for steam.sh to use
+  hosts: steam_vpn_server
+  gather_facts: true
+  gather_subset: network
+  become: true
+  tasks:
+    # assuming we have installed wireguard already
+    - name: Configure wg42 connection
+      template:
+        src: steam_wg.conf.j2
+        dest: /etc/wireguard/wg42.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify: restart wg42
+    - name: Enable systemd template
+      systemd:
+        name: wg-quick@wg42.service
+        state: started
+        enabled: true
+      notify: restart wg42
+    - name: Assure routing is enabled
+      sysctl:
+        name: net.ipv4.ip_forward
+        state: present
+        value: '1'
+        sysctl_set: true
+    - name: Enable forwaring via systemd
+      copy:
+        content: |
+          [Match]
+          Name={{ item }}
+          [Network]
+          IPForward=ipv4
+        dest: /etc/systemd/network/{{ item }}.network
+        owner: root
+        group: root
+        mode: "0644"
+      loop:
+        - wg42
+        - 'ansible_default_ipv4.interface'
+      notify: systemd reload
+  handlers:
+    - name: systemd reload
+      systemd:
+        daemon_reload: true
+    - name: restart wg42
+      systemd:
+        name: wg-quick@wg42.service
+        state: restarted
