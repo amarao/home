@@ -48,13 +48,3 @@
      with_items: '{{priveleged_users}}'
      tags:
       - sudo
-   - name: Configure umask
-     become: yes
-     lineinfile:
-       line: UMASK={{umask}}
-       path: /etc/default/login
-       state: present
-       create: true
-     register: umask_changed
-     tags:
-      - umask

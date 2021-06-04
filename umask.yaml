@@ -1,0 +1,13 @@
+---
+- hosts: desktop
+  gather_facts: false
+  tasks:
+   - name: Configure umask
+     become: yes
+     lineinfile:
+       line: UMASK={{umask}}
+       path: /etc/default/login
+       state: present
+       create: true
+     tags:
+      - umask
