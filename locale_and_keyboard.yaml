@@ -1,5 +1,5 @@
 ---
-- hosts: home
+- hosts: desktop
   tasks:
    - name: Configure console
      become: yes
