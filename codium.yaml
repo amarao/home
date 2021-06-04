@@ -1,0 +1,18 @@
+---
+- hosts: desktop
+  tasks:
+   - name: Install vscodium
+     become: true
+     apt:
+       deb: '{{ deb_url }}'
+     vars:
+       deb_url: "https://github.com/VSCodium/vscodium/releases/download/1.56.2/codium_1.56.2-1620951495_amd64.deb"
+   - name: Create firejail link
+     become: true
+     copy:
+       content: |
+         firejail --net=none --noprofile codium
+       dest: /usr/local/bin/codium
+       owner: root
+       group: root
+       mode: 755
