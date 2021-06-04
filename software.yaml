@@ -1,5 +1,5 @@
 ---
-- hosts: home
+- hosts: desktop
   tasks:
    - name: Install group-specific packages
      become: yes
@@ -14,10 +14,6 @@
      become: yes
      apt: name={{ item }} state=absent purge=yes autoremove=yes
      with_items: '{{ purge_packages }}'
-   - name: Install firefox instead of firefox-esr
-     become: yes
-     apt: name=firefox state=present default_release=sid
-     notify: remove firefox-esr
    - name: Asure user autostart dir exists
      file: path=~/.config/autostart state=directory
    - name: Enable autostart

@@ -4,6 +4,8 @@ desktop:
     retro:
       ansible_connection: local
       ansible_python_interpreter: /usr/bin/python3
+    kuka:
+      ansible_host: 192.168.10.37
 
 nvidia:
   hosts:
@@ -21,6 +23,11 @@ steam_vpn_server:
     vpn.desunote.ru:
       ansible_ssh_user: cloud-user
       ansible_python_interpreter: /usr/bin/python3
+      steam_vpn_private_key: sCKGDMXk9W5a5T9Bl3ArbWkIc7VHsxAjenKahHUrsXE=
+
+steam_vpn_client:
+  children:
+    desktop:
 
 vpn:
   children:
