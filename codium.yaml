@@ -11,7 +11,7 @@
      become: true
      copy:
        content: |
-         firejail --net=none --noprofile codium
+         firejail --net=none --noprofile /usr/bin/codium
        dest: /usr/local/bin/codium
        owner: root
        group: root
