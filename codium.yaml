@@ -15,4 +15,4 @@
        dest: /usr/local/bin/codium
        owner: root
        group: root
-       mode: 755
+       mode: '0755'
