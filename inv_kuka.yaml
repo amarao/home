@@ -1,0 +1,9 @@
+---
+laptop:
+  hosts:
+    kuka:
+      ansible_connection: local
+
+deep_sleep:
+  hosts:
+    kuka:

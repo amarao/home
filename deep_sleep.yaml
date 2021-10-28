@@ -1,0 +1,27 @@
+---
+- hosts: deep_sleep
+  gather_facts: false
+  tasks:
+    - name: Set boot option for memory deep sleep
+      become: true
+      copy:
+        content: |
+          GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} mem_sleep_default=deep"
+        dest: /etc/default/grub.d/mem_sleep_deep.cfg
+        owner: root
+        group: root
+        mode: '0644'
+      notify: update-grub
+  handlers:
+    - name: update-grub
+      become: true
+      command: update-grub
+      notify: reboot required
+    - name: reboot required
+      become: true
+      file:
+        path: /var/run/reboot-required
+        state: touch
+        owner: root
+        group: root
+        mode: '0644'
